@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	// This should be the saved variable from the listener
 	var startCounter = 0
 
 	// broadcast UDP setup
