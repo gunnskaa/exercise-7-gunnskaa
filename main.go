@@ -18,15 +18,16 @@ func main() {
 		panic(err)
 	}
 	buf_listener := make([]byte, 1024)
-
-	isReceiving := true
-	for isReceiving {
+	listening := true
+	
+	// listening loop
+	for listening {
 		time.Sleep(time.Second)
 		i := listen(pc_listener, buf_listener)
 		if i == 0 {
 			fmt.Println("Sender is dead...\nQuit listening\nStart sending")
 			startValue = lastRead;
-			isReceiving = false
+			listening = false
 			pc_listener.Close()
 		}else{
 			lastRead = i
@@ -40,7 +41,6 @@ func main() {
 		panic(err)
 	}
 	defer pc_broadcast.Close()
-
 	addr_broadcast, err := net.ResolveUDPAddr("udp4", "255.255.255.255:42069")
 	if err != nil {
 		panic(err)
@@ -52,7 +52,7 @@ func main() {
 		fmt.Println(err.Error())
 	}
 	
-	// primary work
+	// sending loop
 	for {
 		startValue++
 		time.Sleep(time.Second)
